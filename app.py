@@ -215,8 +215,8 @@ if uploaded_file is not None:
     if hasattr(selected_model, 'predict_proba'):
         st.subheader('📈 ROC Curve')
         fig_roc, ax_roc = plt.subplots(figsize=(8, 6))
-        RocCurveDisplay.from_estimator(
-            selected_model, X_uploaded_scaled, y_uploaded,
+        RocCurveDisplay.from_predictions(
+            y_uploaded, y_prob,
             name=selected_model_name, ax=ax_roc, color='#3498db', linewidth=2
         )
         ax_roc.plot([0, 1], [0, 1], 'k--', linewidth=1, label='Random Classifier')
