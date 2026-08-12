@@ -13,7 +13,7 @@ import seaborn as sns
 from sklearn.metrics import (
     accuracy_score, roc_auc_score, precision_score, recall_score,
     f1_score, matthews_corrcoef, confusion_matrix, classification_report,
-    RocCurveDisplay
+    RocCurveDisplay, roc_curve
 )
 from sklearn.preprocessing import StandardScaler
 
@@ -215,10 +215,17 @@ if uploaded_file is not None:
     if hasattr(selected_model, 'predict_proba'):
         st.subheader('📈 ROC Curve')
         fig_roc, ax_roc = plt.subplots(figsize=(8, 6))
+<<<<<<< Updated upstream
         RocCurveDisplay.from_estimator(
             selected_model, X_uploaded_scaled, y_uploaded,
             name=selected_model_name, ax=ax_roc, color='#3498db', linewidth=2
         )
+=======
+        fpr, tpr, _ = roc_curve(y_uploaded, y_prob)
+        roc_display = RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=auc_val,
+                                      estimator_name=selected_model_name)
+        roc_display.plot(ax=ax_roc, color='#3498db', linewidth=2)
+>>>>>>> Stashed changes
         ax_roc.plot([0, 1], [0, 1], 'k--', linewidth=1, label='Random Classifier')
         ax_roc.set_title(f'ROC Curve — {selected_model_name}', fontsize=14, fontweight='bold')
         ax_roc.legend(loc='lower right')
