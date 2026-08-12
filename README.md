@@ -45,9 +45,9 @@ Predict the presence or absence of heart disease in a patient based on 13 clinic
 
 ## c. GitHub Repository Link
 
-> **TODO:** Replace with your actual GitHub repository link after pushing the code.
+
 >
-> `https://github.com/<your-username>/<repo-name>`
+> `https://github.com/rdshinde/BITS_ML_Assignment_2`
 
 ---
 
