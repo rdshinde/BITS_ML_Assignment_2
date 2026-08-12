@@ -14,7 +14,7 @@ import seaborn as sns
 from sklearn.metrics import (
     accuracy_score, roc_auc_score, precision_score, recall_score,
     f1_score, matthews_corrcoef, confusion_matrix, classification_report,
-    RocCurveDisplay, roc_curve
+    roc_curve
 )
 from sklearn.preprocessing import StandardScaler
 
@@ -208,19 +208,24 @@ if uploaded_file is not None:
             output_dict=True
         )
         report_df = pd.DataFrame(report).T
-        st.dataframe(report_df.style.format('{:.4f}'), use_container_width=True)
+        # Format floats to 4 decimals; leave 'support' as integer
+        fmt_dict = {col: '{:.4f}' for col in report_df.columns if col != 'support'}
+        if 'support' in report_df.columns:
+            fmt_dict['support'] = '{:.0f}'
+        st.dataframe(report_df.style.format(fmt_dict), use_container_width=True)
 
     st.markdown('---')
 
-    # ---- ROC Curve ----
+    # ---- ROC Curve (pure matplotlib — no sklearn display API) ----
     if hasattr(selected_model, 'predict_proba'):
         st.subheader('📈 ROC Curve')
         fig_roc, ax_roc = plt.subplots(figsize=(8, 6))
         fpr, tpr, _ = roc_curve(y_uploaded, y_prob)
-        roc_display = RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=auc_val,
-                                      estimator_name=selected_model_name)
-        roc_display.plot(ax=ax_roc, color='#3498db', linewidth=2)
+        ax_roc.plot(fpr, tpr, color='#3498db', linewidth=2,
+                    label=f'{selected_model_name} (AUC = {auc_val:.4f})')
         ax_roc.plot([0, 1], [0, 1], 'k--', linewidth=1, label='Random Classifier')
+        ax_roc.set_xlabel('False Positive Rate', fontsize=12)
+        ax_roc.set_ylabel('True Positive Rate', fontsize=12)
         ax_roc.set_title(f'ROC Curve — {selected_model_name}', fontsize=14, fontweight='bold')
         ax_roc.legend(loc='lower right')
         ax_roc.grid(alpha=0.3)
