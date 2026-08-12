@@ -78,9 +78,7 @@ Predict the presence or absence of heart disease in a patient based on 13 clinic
 
 ## Streamlit App
 
-> **TODO:** Replace with your live Streamlit app link after deployment.
->
-> `https://<your-app-name>.streamlit.app`
+> `https://2025ac05620mlassignment2.streamlit.app`
 
 ### App Features
 - ✅ CSV file upload for test data
